@@ -18,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.5.0"),
         .package(url: "https://github.com/hummingbird-project/hummingbird.git", branch: "main"),
         .package(
-            url: "https://github.com/hummingbird-project/swift-jobs.git", branch: "job-scheduler"),
+            url: "https://github.com/hummingbird-project/swift-jobs.git", branch: "trigger"),
         .package(
             url: "https://github.com/hummingbird-project/hummingbird-postgres.git", branch: "main"),
         .package(url: "https://github.com/vapor/postgres-nio.git", from: "1.22.1"),

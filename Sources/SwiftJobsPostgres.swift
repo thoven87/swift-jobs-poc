@@ -45,7 +45,7 @@ func buildApplication(
     
     let logger = {
         var logger = Logger(label: SERVICENAME)
-        logger.logLevel = arguments.logLevel
+        logger.logLevel = .debug//arguments.logLevel
         return logger
     }()
 
@@ -64,8 +64,6 @@ func buildApplication(
         backgroundLogger: logger)
     
     let postgresMigrations = PostgresMigrations()
-    
-    let numThreads = env.get("JOB_QUEUE_WORKERS", as: Int.self) ?? 30
     
     let jobQueueService = await JobQueue(
         .postgres(
@@ -99,13 +97,13 @@ func buildApplication(
     
     app.logger.logLevel = arguments.logLevel
     
-    app.beforeServerStarts {
-        try await postgresMigrations.apply(client: postgresClient, logger: logger, dryRun: false)
-    }
-    
     await app.addServices(
         postgresClient, jobQueueService,
         jobScheduleService.scheduler(on: jobQueueService))
+    
+    app.beforeServerStarts {
+        try await postgresMigrations.apply(client: postgresClient, logger: logger, dryRun: false)
+    }
     
     return app
 }

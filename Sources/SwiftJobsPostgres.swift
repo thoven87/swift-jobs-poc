@@ -99,6 +99,10 @@ func buildApplication(
     
     app.logger.logLevel = arguments.logLevel
     
+    app.beforeServerStarts {
+        try await postgresMigrations.apply(client: postgresClient, logger: logger, dryRun: false)
+    }
+    
     await app.addServices(
         postgresClient, jobQueueService,
         jobScheduleService.scheduler(on: jobQueueService))
